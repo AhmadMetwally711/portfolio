@@ -1,0 +1,2107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#000080" />
+    <title>AhmadOS 1.0 - Personal Computer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      :before,
+      :after {
+        box-sizing: border-box;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      p,
+      ul,
+      ol,
+      pre {
+        margin: 0;
+      }
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-size: inherit;
+        font-weight: inherit;
+      }
+      button,
+      input {
+        font: inherit;
+        color: inherit;
+        background: none;
+        border: 0;
+        border-radius: 0;
+        padding: 0;
+        margin: 0;
+      }
+      a {
+        color: inherit;
+        text-decoration: inherit;
+      }
+      ul,
+      ol {
+        list-style: none;
+      }
+      img,
+      svg {
+        display: block;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      :root {
+        --ahmad-black: #000;
+        --ahmad-white: #fff;
+        --ahmad-light: silver;
+        --ahmad-gray: gray;
+        --ahmad-dark: #404040;
+        --ahmad-navy: navy;
+        --ahmad-teal: teal;
+        --ahmad-font: "IBM Plex Mono", "Courier New", Courier, monospace;
+        --ahmad-window-border: 2px;
+        --ahmad-raised-border: var(--ahmad-white) var(--ahmad-dark)
+          var(--ahmad-dark) var(--ahmad-white);
+        --ahmad-sunken-border: var(--ahmad-gray) var(--ahmad-white)
+          var(--ahmad-white) var(--ahmad-gray);
+        --ahmad-motion-fast: 80ms;
+        --ahmad-motion-base: 0.12s;
+        --ahmad-ease: steps(2, end);
+        --ahmad-ease-soft: linear;
+        color-scheme: light;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+      html {
+        background: var(--ahmad-teal);
+      }
+      body {
+        background: var(--ahmad-teal);
+        color: var(--ahmad-black);
+        font-family: var(--ahmad-font);
+        -webkit-font-smoothing: none;
+        text-rendering: geometricprecision;
+        font-size: 14px;
+        line-height: 1.35;
+        overflow: hidden;
+      }
+      ::selection {
+        background: var(--ahmad-navy);
+        color: var(--ahmad-white);
+      }
+      * {
+        scrollbar-width: auto;
+        scrollbar-color: var(--ahmad-gray) var(--ahmad-light);
+      }
+      ::-webkit-scrollbar {
+        width: 16px;
+        height: 16px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--ahmad-light);
+      }
+      ::-webkit-scrollbar-thumb,
+      ::-webkit-scrollbar-button {
+        background: var(--ahmad-gray);
+        border-top: 2px solid var(--ahmad-white);
+        border-left: 2px solid var(--ahmad-white);
+        border-right: 2px solid var(--ahmad-dark);
+        border-bottom: 2px solid var(--ahmad-dark);
+      }
+      ::-webkit-scrollbar-button {
+        background: var(--ahmad-light);
+        width: 16px;
+        height: 16px;
+      }
+      .ahmad-window {
+        background: var(--ahmad-light);
+        border-top: 2px solid var(--ahmad-white);
+        border-left: 2px solid var(--ahmad-white);
+        border-right: 2px solid var(--ahmad-dark);
+        border-bottom: 2px solid var(--ahmad-dark);
+        box-shadow: 1px 1px 0 0 var(--ahmad-dark);
+        transition: box-shadow var(--ahmad-motion-fast) var(--ahmad-ease-soft);
+      }
+      .ahmad-window.is-focused {
+        box-shadow: 2px 2px 0 0 var(--ahmad-black);
+      }
+      .ahmad-titlebar {
+        background: var(--ahmad-navy);
+        min-height: 20px;
+        color: var(--ahmad-white);
+        user-select: none;
+        flex: none;
+        align-items: center;
+        padding: 1px 2px 1px 4px;
+        font-size: 13px;
+        font-weight: 700;
+        display: flex;
+        cursor: move;
+        touch-action: none;
+      }
+      .ahmad-titlebar.inactive {
+        background: var(--ahmad-light);
+        color: var(--ahmad-black);
+        border-bottom: 1px solid var(--ahmad-gray);
+      }
+      .ahmad-window-title {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        flex: auto;
+        overflow: hidden;
+      }
+      .is-maximized .ahmad-titlebar {
+        cursor: default;
+      }
+      .ahmad-window-controls {
+        flex: none;
+        gap: 2px;
+        display: flex;
+      }
+      .ahmad-window-control {
+        background: var(--ahmad-light);
+        width: 16px;
+        height: 15px;
+        color: var(--ahmad-black);
+        border: 1px solid;
+        border-color: var(--ahmad-raised-border);
+        cursor: default;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        line-height: 1;
+        display: inline-flex;
+      }
+      .ahmad-window-control:hover {
+        background: var(--ahmad-white);
+      }
+      .ahmad-window-control:active {
+        border-color: var(--ahmad-sunken-border);
+      }
+      .ahmad-glyph-minimize {
+        background: currentColor;
+        width: 8px;
+        height: 2px;
+      }
+      .ahmad-glyph-close {
+        width: 10px;
+        height: 10px;
+        position: relative;
+      }
+      .ahmad-glyph-close:before,
+      .ahmad-glyph-close:after {
+        content: "";
+        background: currentColor;
+        width: 2px;
+        height: 12px;
+        position: absolute;
+        top: -1px;
+        left: 4px;
+      }
+      .ahmad-glyph-close:before {
+        transform: rotate(45deg);
+      }
+      .ahmad-glyph-close:after {
+        transform: rotate(-45deg);
+      }
+      .ahmad-glyph-maximize {
+        border: 1px solid;
+        border-top-width: 3px;
+        width: 10px;
+        height: 9px;
+      }
+      .ahmad-glyph-restore {
+        border: 1px solid;
+        width: 10px;
+        height: 9px;
+        position: relative;
+      }
+      .ahmad-glyph-restore:after {
+        content: "";
+        background: var(--ahmad-light);
+        border: 1px solid;
+        width: 8px;
+        height: 6px;
+        position: absolute;
+        bottom: 2px;
+        right: -1px;
+      }
+      .ahmad-window-control:hover .ahmad-glyph-restore:after {
+        background: var(--ahmad-white);
+      }
+      .ahmad-application-window {
+        width: min(560px, 100% - 24px);
+        height: min(520px, 100% - 24px);
+        max-width: max(
+          320px,
+          calc(100% - max(var(--ahmad-window-offset-x, 0px), 24px) - 8px)
+        );
+        max-height: max(
+          180px,
+          calc(100% - max(var(--ahmad-window-offset-y, 0px), 24px) - 8px)
+        );
+        transition:
+          left var(--ahmad-motion-base) var(--ahmad-ease),
+          top var(--ahmad-motion-base) var(--ahmad-ease),
+          width var(--ahmad-motion-base) var(--ahmad-ease),
+          height var(--ahmad-motion-base) var(--ahmad-ease);
+        flex-direction: column;
+        display: flex;
+        position: absolute;
+        overflow: hidden;
+        animation: ahmad-window-open var(--ahmad-motion-base) var(--ahmad-ease)
+          both;
+      }
+      .ahmad-application-window.is-dialog {
+        width: min(400px, 100% - 24px);
+        height: min(300px, 100% - 24px);
+      }
+      .ahmad-application-window.is-maximized {
+        width: 100% !important;
+        max-width: 100%;
+        height: 100% !important;
+        max-height: 100%;
+        inset: 0;
+        left: 0 !important;
+        top: 0 !important;
+      }
+      .ahmad-application-window.is-dragging {
+        user-select: none;
+        transition: none;
+      }
+      @keyframes ahmad-window-open {
+        0% {
+          opacity: 0;
+          transform: scale(0.96) translateY(3px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes ahmad-window-close {
+        0% {
+          opacity: 1;
+          transform: none;
+        }
+        to {
+          opacity: 0;
+          transform: scale(0.97);
+        }
+      }
+      @keyframes ahmad-window-minimize {
+        0% {
+          opacity: 1;
+          transform: none;
+        }
+        to {
+          opacity: 0;
+          transform: scale(0.2) translateY(70%);
+        }
+      }
+      .ahmad-application-window[data-exiting="close"] {
+        animation: ahmad-window-close 0.11s var(--ahmad-ease) both;
+      }
+      .ahmad-application-window[data-exiting="minimize"] {
+        animation: ahmad-window-minimize 0.14s var(--ahmad-ease) both;
+      }
+      .ahmad-command-bar {
+        background: var(--ahmad-light);
+        min-height: 26px;
+        border-bottom: 1px solid var(--ahmad-dark);
+        user-select: none;
+        white-space: nowrap;
+        scrollbar-width: none;
+        align-items: stretch;
+        display: flex;
+        overflow-x: auto;
+      }
+      .ahmad-command-bar::-webkit-scrollbar {
+        display: none;
+      }
+      .ahmad-command-item {
+        cursor: default;
+        text-align: left;
+        flex: none;
+        align-items: center;
+        padding: 0 9px;
+        display: inline-flex;
+      }
+      .ahmad-command-item:hover,
+      .ahmad-command-item[data-active="true"] {
+        background: var(--ahmad-navy);
+        color: var(--ahmad-white);
+      }
+      .ahmad-menu {
+        z-index: 2000;
+        background: var(--ahmad-light);
+        border-top: 2px solid var(--ahmad-white);
+        border-left: 2px solid var(--ahmad-white);
+        border-right: 2px solid var(--ahmad-dark);
+        border-bottom: 2px solid var(--ahmad-dark);
+        min-width: 200px;
+        max-width: min(260px, 100vw - 8px);
+        max-height: calc(100vh - 8px);
+        box-shadow: 2px 2px 0 0 var(--ahmad-black);
+        user-select: none;
+        padding: 2px;
+        position: fixed;
+        overflow-y: auto;
+      }
+      .ahmad-menu-separator {
+        border-top: 1px solid var(--ahmad-gray);
+        border-bottom: 1px solid var(--ahmad-white);
+        height: 0;
+        margin: 3px 2px;
+      }
+      .ahmad-menu-item {
+        width: 100%;
+        color: var(--ahmad-black);
+        text-align: left;
+        cursor: default;
+        align-items: center;
+        padding: 4px 6px;
+        display: flex;
+      }
+      .ahmad-menu-item-mark {
+        flex: none;
+        width: 14px;
+        font-size: 12px;
+        line-height: 1;
+      }
+      .ahmad-menu-item-label {
+        flex: auto;
+      }
+      .ahmad-menu-item:hover:not(:disabled),
+      .ahmad-menu-item:focus,
+      .ahmad-menu-item[data-selected="true"] {
+        background: var(--ahmad-navy);
+        color: var(--ahmad-white);
+        outline: 1px dotted var(--ahmad-white);
+        outline-offset: -3px;
+      }
+      .ahmad-menu-item:disabled {
+        color: var(--ahmad-dark);
+      }
+      .ahmad-app-shell {
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        min-height: 320px;
+        display: flex;
+      }
+      .ahmad-top-bar {
+        flex: none;
+      }
+      .ahmad-desktop {
+        background: var(--ahmad-teal);
+        flex: auto;
+        width: 100%;
+        min-height: 0;
+        position: relative;
+        overflow: hidden;
+      }
+      .ahmad-desktop-icons {
+        flex-flow: column wrap;
+        align-content: flex-start;
+        align-items: flex-start;
+        gap: 1px;
+        display: flex;
+        position: absolute;
+        top: 14px;
+        bottom: 14px;
+        left: 14px;
+      }
+      .ahmad-desktop-icons.is-arranged {
+        bottom: 14px;
+        overflow: hidden;
+      }
+      .ahmad-desktop-icon {
+        width: 76px;
+        min-height: 70px;
+        color: var(--ahmad-white);
+        cursor: default;
+        text-align: center;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        padding: 3px 2px 4px;
+        display: flex;
+        position: relative;
+        flex: none;
+      }
+      .ahmad-desktop-icon-label {
+        max-width: 72px;
+        font-size: 11px;
+        line-height: 1.25;
+        display: block;
+      }
+      .ahmad-desktop-icon-name,
+      .ahmad-desktop-icon-extension {
+        display: block;
+      }
+      .ahmad-desktop-icon:hover,
+      .ahmad-desktop-icon:focus-visible {
+        background: var(--ahmad-navy);
+      }
+      .ahmad-desktop-icon:focus-visible {
+        outline: 1px dotted var(--ahmad-white);
+        outline-offset: -2px;
+      }
+      .ahmad-desktop-icon-art {
+        flex: none;
+        width: 32px;
+        height: 32px;
+        display: block;
+      }
+      .ahmad-desktop-icon-flag {
+        background: var(--ahmad-navy);
+        width: 3px;
+        height: 3px;
+        position: absolute;
+        top: 30px;
+        left: 3px;
+      }
+      .ahmad-desktop-icon:hover .ahmad-desktop-icon-flag,
+      .ahmad-desktop-icon:focus-visible .ahmad-desktop-icon-flag {
+        background: var(--ahmad-white);
+      }
+      .ahmad-status-bar {
+        background: var(--ahmad-light);
+        height: 30px;
+        border-top: 1px solid var(--ahmad-white);
+        flex: none;
+        justify-content: space-between;
+        align-items: stretch;
+        padding: 3px 4px;
+        display: flex;
+        overflow: hidden;
+      }
+      .ahmad-status-apps {
+        background: var(--ahmad-light);
+        border: 1px solid;
+        border-color: var(--ahmad-sunken-border);
+        flex: auto;
+        align-items: stretch;
+        gap: 2px;
+        min-width: 0;
+        padding: 1px;
+        display: flex;
+        overflow: hidden;
+      }
+      .ahmad-status-item {
+        background: var(--ahmad-light);
+        min-width: 42px;
+        max-width: 150px;
+        cursor: default;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        border: 1px solid transparent;
+        flex: 0 auto;
+        align-items: center;
+        padding: 0 6px;
+        font-size: 12px;
+        display: inline-flex;
+        overflow: hidden;
+      }
+      .ahmad-status-item:hover,
+      .ahmad-status-item:focus-visible {
+        background: var(--ahmad-navy);
+        color: var(--ahmad-white);
+      }
+      .ahmad-status-item:focus-visible {
+        outline: 1px dotted var(--ahmad-white);
+        outline-offset: -3px;
+      }
+      .ahmad-status-item[data-active="true"] {
+        background: var(--ahmad-navy);
+        color: var(--ahmad-white);
+        border-color: var(--ahmad-black);
+        box-shadow: inset 1px 1px 0 0 var(--ahmad-gray);
+        font-weight: 700;
+      }
+      .ahmad-status-item[data-minimized="true"] {
+        color: var(--ahmad-dark);
+      }
+      .ahmad-status-item[data-minimized="true"]:before {
+        content: "_ ";
+      }
+      .ahmad-status-actions {
+        border-left: 1px solid var(--ahmad-gray);
+        flex: none;
+        align-items: center;
+        gap: 2px;
+        padding-left: 6px;
+        display: flex;
+      }
+      .ahmad-status-links {
+        align-items: center;
+        gap: 2px;
+        display: flex;
+      }
+      .ahmad-status-link,
+      .ahmad-status-cv {
+        background: var(--ahmad-light);
+        color: var(--ahmad-black);
+        cursor: default;
+        border: 1px solid transparent;
+        align-items: center;
+        padding: 0 5px;
+        font-size: 12px;
+        display: inline-flex;
+      }
+      .ahmad-status-link:hover,
+      .ahmad-status-link:focus-visible,
+      .ahmad-status-cv:hover,
+      .ahmad-status-cv:focus-visible {
+        background: var(--ahmad-navy);
+        color: var(--ahmad-white);
+      }
+      .ahmad-status-clock {
+        font-variant-numeric: tabular-nums;
+        padding: 0 5px;
+        font-size: 12px;
+      }
+      .ahmad-detail-content {
+        flex: auto;
+        min-height: 0;
+        padding: 14px 16px;
+        overflow: auto;
+        user-select: text;
+      }
+      .ahmad-detail-section {
+        border-bottom: 1px solid var(--ahmad-gray);
+        padding: 12px 0;
+      }
+      .ahmad-detail-section:first-child {
+        padding-top: 0;
+      }
+      .ahmad-detail-section:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+      }
+      .ahmad-detail-section h2 {
+        color: var(--ahmad-navy);
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        font-size: 13px;
+      }
+      .ahmad-detail-section h3 {
+        color: var(--ahmad-dark);
+        text-transform: uppercase;
+        margin-top: 10px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .ahmad-detail-section p + p {
+        margin-top: 5px;
+      }
+      .ahmad-detail-list {
+        margin: 8px 0 0;
+        padding-left: 20px;
+        list-style: square;
+      }
+      .ahmad-detail-list li {
+        margin-top: 3px;
+      }
+      .ahmad-detail-list li::marker {
+        color: var(--ahmad-navy);
+      }
+      .ahmad-detail-links {
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+        display: flex;
+      }
+      .ahmad-detail-links a {
+        color: var(--ahmad-navy);
+        text-underline-offset: 2px;
+        text-decoration: underline;
+      }
+      .ahmad-detail-links a:hover,
+      .ahmad-detail-links a:focus-visible {
+        background: var(--ahmad-navy);
+        color: var(--ahmad-white);
+        text-decoration: none;
+      }
+      .ahmad-dialog-actions {
+        border-top: 1px solid var(--ahmad-gray);
+        flex: none;
+        justify-content: flex-end;
+        padding: 8px 10px;
+        display: flex;
+      }
+      .ahmad-dialog-button {
+        background: var(--ahmad-light);
+        min-width: 68px;
+        border: 1px solid;
+        border-color: var(--ahmad-raised-border);
+        cursor: default;
+        padding: 3px 12px;
+      }
+      .ahmad-dialog-button:hover {
+        background: var(--ahmad-white);
+      }
+      .ahmad-dialog-button:active {
+        border-color: var(--ahmad-sunken-border);
+      }
+      .ahmad-profile-heading {
+        border-bottom: 1px solid var(--ahmad-gray);
+        padding-bottom: 12px;
+        margin-bottom: 12px;
+      }
+      .ahmad-profile-heading h1 {
+        font-size: 20px;
+        line-height: 1.15;
+      }
+      .ahmad-profile-heading p {
+        margin-top: 4px;
+      }
+      .ahmad-about {
+        border-bottom: 1px solid var(--ahmad-gray);
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+      }
+      .ahmad-about-title {
+        color: var(--ahmad-navy);
+        font-size: 20px;
+        line-height: 1.15;
+      }
+      .ahmad-about-tagline {
+        color: var(--ahmad-dark);
+        margin: 5px 0 0;
+      }
+      .ahmad-shortcut {
+        align-items: baseline;
+        gap: 10px;
+        display: flex;
+      }
+      .ahmad-shortcut + .ahmad-shortcut {
+        margin-top: 5px;
+      }
+      .ahmad-shortcut-key {
+        background: var(--ahmad-white);
+        border: 1px solid;
+        border-color: var(--ahmad-sunken-border);
+        flex: none;
+        min-width: 148px;
+        padding: 1px 5px;
+        font-size: 12px;
+      }
+      .ahmad-terminal {
+        background: var(--ahmad-black);
+        min-height: 0;
+        color: var(--ahmad-white);
+        overflow-wrap: break-word;
+        white-space: pre-wrap;
+        cursor: text;
+        user-select: text;
+        flex: auto;
+        padding: 10px 12px;
+        font-size: 13px;
+        line-height: 1.45;
+        overflow: auto;
+      }
+      .ahmad-terminal-line {
+        min-height: 1.45em;
+      }
+      .ahmad-terminal-line[data-kind="echo"],
+      .ahmad-terminal-line[data-kind="banner"],
+      .ahmad-terminal-line[data-kind="error"] {
+        color: var(--ahmad-light);
+      }
+      .ahmad-terminal-line[data-kind="heading"] {
+        font-weight: 700;
+      }
+      .ahmad-terminal-prompt {
+        gap: 6px;
+        display: flex;
+      }
+      .ahmad-terminal-prompt-label {
+        color: var(--ahmad-light);
+        flex: none;
+      }
+      .ahmad-terminal-input {
+        min-width: 0;
+        color: var(--ahmad-white);
+        caret-color: var(--ahmad-white);
+        flex: auto;
+      }
+      .ahmad-terminal-input:focus,
+      .ahmad-terminal-input:focus-visible {
+        outline: none;
+      }
+      .ahmad-terminal::selection {
+        background: var(--ahmad-white);
+        color: var(--ahmad-black);
+      }
+      :focus-visible {
+        outline: 1px dotted var(--ahmad-black);
+        outline-offset: 1px;
+      }
+      .ahmad-titlebar :focus-visible,
+      .ahmad-terminal :focus-visible,
+      .ahmad-menu-item:focus-visible,
+      .ahmad-status-item:focus-visible {
+        outline-color: var(--ahmad-white);
+      }
+      @keyframes ahmad-boot-cursor {
+        0%,
+        49% {
+          opacity: 1;
+        }
+        50%,
+        to {
+          opacity: 0;
+        }
+      }
+      .ahmad-boot {
+        z-index: 9000;
+        background: var(--ahmad-black);
+        color: var(--ahmad-light);
+        cursor: none;
+        transition: opacity var(--ahmad-motion-base) linear;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px 22px;
+        font-size: 14px;
+        line-height: 1.5;
+        display: flex;
+        position: fixed;
+        inset: 0;
+      }
+      .ahmad-boot.is-leaving {
+        opacity: 0;
+      }
+      .ahmad-boot-screen {
+        flex: auto;
+        min-height: 0;
+      }
+      .ahmad-boot-line {
+        white-space: pre-wrap;
+        margin: 0;
+      }
+      .ahmad-boot-prompt {
+        align-items: center;
+        gap: 2px;
+        display: flex;
+      }
+      .ahmad-boot-cursor {
+        background: var(--ahmad-light);
+        width: 8px;
+        height: 14px;
+        animation: 0.9s step-end infinite ahmad-boot-cursor;
+      }
+      .ahmad-boot-skip {
+        color: var(--ahmad-gray);
+        margin: 0;
+        font-size: 12px;
+      }
+      .ahmad-crt {
+        z-index: 9999;
+        pointer-events: none;
+        position: fixed;
+        inset: 0;
+      }
+      .ahmad-crt:before {
+        content: "";
+        background-image: repeating-linear-gradient(
+          #0000 0 2px,
+          #0000000e 2px 3px
+        );
+        position: absolute;
+        inset: 0;
+      }
+      .ahmad-crt:after {
+        content: "";
+        background-image: radial-gradient(130% 130%, #0000 55%, #00000029 100%);
+        animation: 9s step-end infinite ahmad-crt-flicker;
+        position: absolute;
+        inset: 0;
+      }
+      @keyframes ahmad-crt-flicker {
+        0%,
+        46% {
+          opacity: 1;
+        }
+        47%,
+        52% {
+          opacity: 0.86;
+        }
+        53%,
+        to {
+          opacity: 1;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        :before,
+        :after {
+          transition-duration: 0.01ms !important;
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+        }
+        .ahmad-crt:after,
+        .ahmad-boot-cursor {
+          animation: none;
+        }
+      }
+      @media (width<=640px) {
+        body {
+          font-size: 13px;
+        }
+        .ahmad-desktop-icons,
+        .ahmad-desktop-icons.is-arranged {
+          flex-flow: wrap;
+          align-content: flex-start;
+          gap: 2px;
+          bottom: auto;
+          right: 8px;
+        }
+        .ahmad-application-window {
+          width: calc(100% - 16px);
+          max-width: calc(100% - 16px);
+          height: calc(100% - var(--ahmad-window-offset-y, 20px) - 12px);
+          max-height: calc(100% - var(--ahmad-window-offset-y, 20px) - 12px);
+        }
+        .ahmad-application-window.is-maximized {
+          max-width: 100%;
+          max-height: 100%;
+        }
+        .ahmad-application-window .ahmad-titlebar {
+          cursor: default;
+        }
+        .ahmad-detail-content {
+          padding: 12px;
+        }
+        .ahmad-status-bar {
+          padding-inline: 2px;
+        }
+        .ahmad-status-item {
+          min-width: 36px;
+          max-width: 110px;
+        }
+        .ahmad-status-actions {
+          gap: 0;
+          padding-left: 4px;
+        }
+        .ahmad-status-link,
+        .ahmad-status-cv,
+        .ahmad-status-clock {
+          padding-inline: 3px;
+        }
+        .ahmad-shortcut-key {
+          min-width: 112px;
+        }
+        .ahmad-terminal {
+          padding: 8px;
+          font-size: 12px;
+        }
+        .ahmad-boot {
+          padding: 14px 16px;
+          font-size: 13px;
+        }
+      }
+      @media (width<=420px) {
+        .ahmad-command-item {
+          padding: 0 6px;
+          font-size: 12px;
+        }
+        .ahmad-desktop-icon {
+          width: 68px;
+          min-height: 66px;
+        }
+        .ahmad-desktop-icon-label {
+          max-width: 64px;
+          font-size: 10px;
+        }
+        .ahmad-desktop-icon-art {
+          width: 28px;
+          height: 28px;
+        }
+        .ahmad-desktop-icon-flag {
+          top: 26px;
+        }
+        .ahmad-shortcut {
+          flex-wrap: wrap;
+          gap: 2px;
+        }
+        .ahmad-shortcut-key {
+          min-width: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <noscript
+      >AhmadOS runs in the browser and needs JavaScript enabled.</noscript
+    >
+    <div class="ahmad-app-shell">
+      <header class="ahmad-top-bar">
+        <nav
+          class="ahmad-command-bar"
+          id="bar"
+          aria-label="System command bar"
+        ></nav>
+      </header>
+      <main class="ahmad-desktop" id="desk">
+        <div class="ahmad-desktop-icons" id="icons"></div>
+      </main>
+      <footer class="ahmad-status-bar">
+        <div class="ahmad-status-apps" id="tasks"></div>
+        <div class="ahmad-status-actions" id="tray"></div>
+      </footer>
+    </div>
+    <div class="ahmad-crt" aria-hidden="true"></div>
+    <script>
+      // ===== EDIT YOUR CONTENT HERE =====
+      const D = {
+        name: "Ahmad Metwally",
+        title: "Software Engineer",
+        role: "Communications and Computer Engineering Graduate",
+        loc: "Cairo, Egypt",
+        summary:
+          "Full-stack JavaScript developer with a Computer Engineering degree and hands-on experience building and deploying complete web applications with React, Node.js, Express and PostgreSQL/Supabase: responsive interfaces, RESTful APIs, authentication and session management, and secure database design. Seeking a junior full-stack or front-end role where I can write clean, maintainable code and contribute to a collaborative development team.",
+        email: "ahhmadsalehh@gmail.com",
+        phone: "+20 112 292 6365",
+        links: {
+          in: "https://www.linkedin.com/in/ahmad-metwally-8007b9407",
+          GH: "https://github.com/AhmadMetwally711",
+          CV: "Ahmad-Metwally-CV.pdf",
+        },
+        edu: [
+          {
+            inst: "Mansoura University",
+            degree:
+              "Bachelor of Engineering in Communications and Computer Engineering",
+            period: "Jan 2020 - Jan 2025",
+            loc: "Mansoura, Egypt",
+          },
+        ],
+        vol: [
+          {
+            org: "University Center for Career Development",
+            role: "Volunteer",
+            period: "Jan 2023 - Jan 2025",
+            loc: "Mansoura, Egypt",
+          },
+        ],
+        certs: [
+          {
+            name: "Employability Skills",
+            issuer: "Aspire Leadership Academy",
+            date: "Aug 2024",
+          },
+          {
+            name: "Athletics Championship, 1400 m",
+            issuer: "Egyptian Athletics Federation",
+            date: "Jan 2017",
+          },
+        ],
+        projects: [
+          {
+            name: "Nuva",
+            date: "",
+            type: "Full-Stack Clothing Store",
+            tech: [
+              "React 19",
+              "React Router 7",
+              "Supabase",
+              "PostgreSQL",
+              "Vite",
+              "Vercel",
+            ],
+            desc: "A full-stack clothing store with a customer storefront and an admin dashboard.",
+            feats: [
+              "Customer storefront with size/color variants and live stock, cart synced across devices, cash-on-delivery checkout, order tracking and cancellation.",
+              "Secured the data layer with Row Level Security on 9 tables and 7 PostgreSQL functions (RPC) that calculate prices, lock stock rows and run each order in a single transaction, so the client cannot tamper with prices, stock or roles.",
+              "Admin tools: a realtime sales dashboard, order and monthly returns management, and product management with image uploads to Supabase Storage and stock-conflict protection.",
+              "Improved load time by lazy-loading admin routes, cutting the main JavaScript bundle by about 22% (683 kB to 532 kB).",
+            ],
+            gh: "https://github.com/AhmadMetwally711/Nuva",
+            demo: "https://nuva-six.vercel.app/",
+          },
+          {
+            name: "VanLife",
+            date: "",
+            type: "Full-Stack Van Rental Platform",
+            tech: [
+              "React",
+              "Express.js",
+              "PostgreSQL",
+              "Vite",
+              "Vercel",
+              "Render",
+            ],
+            desc: "A full-stack van rental platform with a React frontend and an Express.js REST API backed by PostgreSQL.",
+            feats: [
+              "Session-based authentication and protected routes.",
+              "Favorites feature and a host dashboard.",
+              "Frontend deployed on Vercel and backend on Render.",
+            ],
+            gh: "https://github.com/AhmadMetwally711/van-life",
+            demo: "https://van-life-b8uegq0v8-ahmad-metwally.vercel.app/",
+          },
+        ],
+        skills: [
+          {
+            cat: "Frontend",
+            items: [
+              "HTML5 (Semantic HTML)",
+              "CSS3 (Flexbox, Grid)",
+              "JavaScript (ES6+)",
+              "React",
+              "React Router",
+              "React Hooks",
+              "Fetch API",
+              "DOM manipulation",
+              "State management",
+              "Component-based architecture",
+              "Responsive design",
+              "UI/UX fundamentals",
+            ],
+          },
+          {
+            cat: "Backend",
+            items: [
+              "Node.js",
+              "Express.js",
+              "RESTful APIs",
+              "Authentication & sessions",
+              "CRUD operations",
+              "HTTP methods",
+              "JSON",
+              "async/await",
+              "Error handling",
+            ],
+          },
+          {
+            cat: "Databases",
+            items: [
+              "PostgreSQL (SQL, Row Level Security, functions)",
+              "Supabase (Auth, Realtime, Storage)",
+              "SQLite",
+              "Database design",
+            ],
+          },
+          {
+            cat: "Testing",
+            items: [
+              "Vitest",
+              "React Testing Library",
+              "MSW (Mock Service Worker)",
+            ],
+          },
+          {
+            cat: "Tools",
+            items: [
+              "Git",
+              "GitHub",
+              "npm",
+              "Vite",
+              "Vercel",
+              "Render",
+              "VS Code",
+            ],
+          },
+        ],
+        soft: [
+          "Problem solving",
+          "Teamwork",
+          "Communication",
+          "Time management",
+          "Quick learning",
+          "Attention to detail",
+        ],
+        langs: [
+          { cat: "Arabic", items: ["Native"] },
+          { cat: "English", items: ["Proficient"] },
+          { cat: "Spanish", items: ["Basic"] },
+          { cat: "French", items: ["Basic"] },
+        ],
+      };
+      // ==================================
+      const OS = "AhmadOS",
+        VER = "1.0",
+        PROMPT = "C:\\AHMAD>",
+        TAG = D.name + "'s Personal Computer";
+      const APPS = [
+        ["ahmad", "Ahmad.exe"],
+        ["profile", "Profile.exe"],
+        ["education", "Education.exe"],
+        ["skills", "Skills.exe"],
+        ["projects", "Projects.exe"],
+        ["contact", "Contact.exe"],
+        ["terminal", "Terminal.exe"],
+      ];
+      const DLG = [
+        ["about", "About AhmadOS.exe"],
+        ["system-info", "System Info.exe"],
+        ["help", "AhmadOS Help.exe"],
+        ["shortcuts", "Shortcuts.exe"],
+      ];
+      const SZ = {
+        ahmad: [500, 300],
+        profile: [440, 260],
+        education: [460, 300],
+        skills: [460, 280],
+        projects: [500, 300],
+        contact: [420, 240],
+        terminal: [560, 220],
+        about: [360, 190],
+        "system-info": [380, 260],
+        help: [420, 280],
+        shortcuts: [440, 250],
+      };
+      const P0 = {
+        ahmad: [96, 78],
+        profile: [130, 104],
+        education: [164, 130],
+        skills: [198, 156],
+        projects: [266, 208],
+        contact: [300, 234],
+        terminal: [334, 260],
+        about: [250, 150],
+        "system-info": [300, 200],
+        help: [170, 120],
+        shortcuts: [210, 170],
+      };
+      const PX = {
+        ahmad:
+          "................|....kkkkkkkk....|..kkwwwwwwwwkk..|..kwwllllllwwk..|..kwwllllllwwk..|..kwwllllllwwk..|..kwwllllllwwk..|..kwwllllllwwk..|..kkwwwwwwwwkk..|....kkkkkkkk....|.....k....k.....|.....k....k.....|....k.kkkk.k....|...kkk....kkk...|................|................",
+        profile:
+          "................|.....kkkkkk.....|....kwwwwwwk....|....kwkkkkwk....|....kwkwwkwk....|....kwkkkkwk....|....kwwwwwwk....|.....kkkkkk.....|....kkkkkkkk....|..kkwwwwwwwwkk..|.kwwwwwwwwwwwwk.|.kwwwwwwwwwwwwk.|.kwkkwwwwwwkkwk.|.kwkkwwwwwwkkwk.|..kkkkkkkkkkkk..|................",
+        education:
+          "................|......kkkk......|.....kwwwwk.....|....kkwwwwkk....|..kkkkwwwwkkkk..|.kwwwwwwwwwwwwk.|.kwkwwwwwwwwkwk.|.kwwwwwwwwwwwwk.|..kkkkkkkkkkkk..|.....kwwwwk.....|....kwwwwwwk....|....kwkkkkwk....|....kwwwwwwk....|....kkkkkkkk....|................|................",
+        skills:
+          ".......kk.......|....kkkkkkkk....|...kkwwwwwwkk...|..kkwwwwwwwwkk..|..kwwwwwwwwwwk..|.kkwwwwkkwwwwkk.|.kwwwwk..kwwwwk.|kwwwwk....kwwwwk|kwwwwk....kwwwwk|.kwwwwk..kwwwwk.|.kkwwwwkkwwwwkk.|..kwwwwwwwwwwk..|..kkwwwwwwwwkk..|...kkwwwwwwkk...|....kkkkkkkk....|.......kk.......",
+        projects:
+          "................|..kkkk..........|..kwwk..........|..kwwkkkkkkkkkk.|..kwwwwwwwwwwwwk|..kwwkkwwkkwwwwk|..kwwkkwwkkwwwwk|..kwwkkwwkkwwwwk|..kwwwwwwwwwwwwk|..kwwwwwwwwwwwwk|..kwwwwwwwwwwwwk|..kwwwwwwwwwwwwk|..kwwwwwwwwwwwwk|..kkkkkkkkkkkkkk|................|................",
+        contact:
+          "................|................|..kkkkkkkkkkkk..|.kkwwwwwwwwwwkk.|.kwkwwwwwwwwkwk.|.kwwkwwwwwwkwwk.|.kwwwkwwwwkwwwk.|.kwwwwkwwkwwwwk.|.kwwwwwkkwwwwwk.|.kwwwwwwwwwwwwk.|.kwwwwwwwwwwwwk.|.kllllllllllllk.|.kkkkkkkkkkkkkk.|................|................|................",
+        terminal:
+          "................|..kkkkkkkkkkkk..|.kwwwwwwwwwwwwk.|.kwwkwwwwwwwwwk.|.kwwwkwwwwwwwwk.|.kwwwwkwwwwwwwk.|.kwwwkwwwwwwwwk.|.kwwkwwwwwwwwwk.|.kwwwwwwwwwwwwk.|.kwwwwwwkkkkwwk.|.kwwwwwwkkkkwwk.|.kwwwwwwwwwwwwk.|.kkkkkkkkkkkkkk.|................|................|................",
+      };
+      const px = (k) => {
+        const c = {
+            k: "var(--ahmad-black)",
+            w: "var(--ahmad-white)",
+            l: "var(--ahmad-light)",
+          },
+          p = { k: "", w: "", l: "" };
+        PX[k].split("|").forEach((r, y) =>
+          [...r].forEach((ch, x) => {
+            if (c[ch]) p[ch] += `M${x} ${y}h1v1h-1z`;
+          }),
+        );
+        return `<svg viewBox="0 0 16 16" width="32" height="32" aria-hidden="true" shape-rendering="crispEdges">${Object.keys(
+          p,
+        )
+          .map((a) => `<path d="${p[a]}" fill="${c[a]}"/>`)
+          .join("")}</svg>`;
+      };
+      const $ = (s) => document.querySelector(s),
+        desk = $("#desk"),
+        tasks = $("#tasks"),
+        narrow = () => matchMedia("(max-width:640px)").matches;
+      const W = {},
+        ALL = [];
+      [...APPS, ...DLG].forEach(([id, title], i) => {
+        const w = {
+          id,
+          title,
+          dlg: i >= APPS.length,
+          x: null,
+          y: null,
+          open: 0,
+          min: 0,
+          max: 0,
+          z: 0,
+          el: null,
+        };
+        W[id] = w;
+        ALL.push(w);
+      });
+      let topZ = 10,
+        active = null,
+        arr = false,
+        menu = null;
+      const vis = (w) => w.open && !w.min,
+        topVis = () => {
+          let b = null;
+          ALL.forEach((w) => {
+            if (vis(w) && (!b || w.z > b.z)) b = w;
+          });
+          return b && b.id;
+        };
+      // ---- content ----
+      const H = (t, c) =>
+          `<section class="ahmad-detail-section"><h2>${t}</h2>${c}</section>`,
+        Pp = (t) => `<p>${t}</p>`,
+        UL = (a) =>
+          `<ul class="ahmad-detail-list">${a.map((x) => `<li>${x}</li>`).join("")}</ul>`;
+      const LK = (a) =>
+        `<div class="ahmad-detail-links">${a.map(([l, u]) => `<a href="${u}" target="_blank" rel="noopener noreferrer">[${l}]</a>`).join("")}</div>`;
+      const PL = [
+        ["LINKEDIN", D.links.in],
+        ["GITHUB", D.links.GH],
+      ];
+      const dt = (p) => [p.date, p.type].filter(Boolean).join(" - ");
+      const HELP = [
+        ["DESKTOP", ["Click an application icon to open it."]],
+        [
+          "SYSTEM MENUS",
+          [
+            "Open a menu from the top bar.",
+            "Click another menu to switch menus.",
+            "Use the left and right arrow keys to move between menus.",
+            "Click anywhere outside a menu to close it.",
+            "Press Escape to close the open menu.",
+          ],
+        ],
+        [
+          "WINDOWS",
+          [
+            "Drag a window by its title bar.",
+            "Click a window to bring it to the front.",
+            "Press Escape to close a message box.",
+            "Right-click the desktop for desktop actions.",
+          ],
+        ],
+        [
+          "MINIMIZE / MAXIMIZE",
+          [
+            "Use the minimize control in the title bar.",
+            "Use the maximize control to fill the desktop.",
+            "Use the restore control to return the window to its size.",
+          ],
+        ],
+        [
+          "STATUS BAR",
+          [
+            "Click an application button to focus its window.",
+            "Click a minimized application button to restore it.",
+            "Close a window with its close control to remove its button.",
+          ],
+        ],
+        ["CV", ["Use the CV button to open the resume."]],
+      ];
+      const KEYS = [
+        ["Escape", "Close the open menu, or an open message box"],
+        ["Arrow Left / Arrow Right", "Move between the top bar menus"],
+        ["Arrow Up", "Select the previous menu item"],
+        ["Arrow Down", "Select the next menu item"],
+        ["Enter", "Activate the selected menu item"],
+      ];
+      const SYS =
+        Pp("System: " + OS) +
+        Pp("Version: " + VER) +
+        Pp("Developer: " + D.name);
+      const C = {
+        ahmad: () =>
+          `<div class="ahmad-profile-heading"><h1>${D.name}</h1>${Pp(D.title) + Pp(D.role) + Pp(D.loc)}</div>` +
+          H("ABOUT THIS USER", Pp(D.summary)) +
+          H(
+            "EDUCATION",
+            D.edu
+              .map((e) => Pp(`${e.inst} - ${e.degree} (${e.period})`))
+              .join(""),
+          ) +
+          H(
+            "SKILLS OVERVIEW",
+            Pp(D.skills.map((s) => s.cat).join(" / ")) +
+              Pp("See SKILLS.EXE for the full configuration."),
+          ) +
+          H(
+            "PROJECTS OVERVIEW",
+            D.projects
+              .map((p) => Pp(p.name + (p.date ? ` (${p.date})` : "")))
+              .join("") +
+              Pp("See PROJECTS.EXE for documented project details."),
+          ) +
+          H(
+            "CONTACT",
+            Pp("Email: " + D.email) +
+              Pp("Phone: " + D.phone) +
+              LK(PL) +
+              Pp("See CONTACT.EXE for full contact information."),
+          ),
+        profile: () =>
+          H("IDENTITY", Pp(D.name) + Pp(D.title) + Pp(D.role) + Pp(D.loc)) +
+          H("SUMMARY", Pp(D.summary)),
+        education: () =>
+          D.edu
+            .map((e) => H(e.inst, Pp(e.degree) + Pp(e.period) + Pp(e.loc)))
+            .join("") +
+          H(
+            "VOLUNTEERING",
+            D.vol
+              .map((v) => Pp(v.org) + Pp(v.role) + Pp(v.period) + Pp(v.loc))
+              .join(""),
+          ) +
+          H(
+            "CERTIFICATES AND ACHIEVEMENTS",
+            D.certs
+              .map((c) => Pp(c.name) + Pp(`${c.issuer} (${c.date})`))
+              .join(""),
+          ),
+        skills: () =>
+          H(
+            "TECHNICAL SKILLS",
+            D.skills
+              .map((s) => `<h3>${s.cat}</h3>${Pp(s.items.join(" / "))}`)
+              .join(""),
+          ) +
+          H("SOFT SKILLS", Pp(D.soft.join(" / "))) +
+          H(
+            "LANGUAGES",
+            D.langs.map((l) => Pp(`${l.cat}: ${l.items.join(", ")}`)).join(""),
+          ),
+        projects: () =>
+          D.projects
+            .map((p) =>
+              H(
+                p.name,
+                (dt(p) ? Pp(dt(p)) : "") +
+                  Pp("TECH: " + p.tech.join(" / ")) +
+                  Pp(p.desc) +
+                  UL(p.feats) +
+                  LK(
+                    [
+                      ["GITHUB", p.gh],
+                      ["LIVE DEMO", p.demo],
+                    ].filter((l) => l[1]),
+                  ),
+              ),
+            )
+            .join(""),
+        contact: () =>
+          H(
+            "CONTACT",
+            Pp(D.name) +
+              Pp("Email: " + D.email) +
+              Pp("Phone: " + D.phone) +
+              Pp("Location: " + D.loc),
+          ) + H("PROFILES", LK(PL) + LK([["CV", D.links.CV]])),
+        about: () =>
+          `<div class="ahmad-about"><h1 class="ahmad-about-title">${OS}</h1><p class="ahmad-about-tagline">${TAG}</p></div>` +
+          H("SYSTEM", SYS),
+        "system-info": () =>
+          H(
+            "SYSTEM",
+            Pp("System: " + OS) +
+              Pp("Version: " + VER) +
+              Pp("Platform: Browser-based operating system portfolio") +
+              Pp("Developer: " + D.name),
+          ) + H("TECHNOLOGY", Pp("HTML") + Pp("CSS") + Pp("JavaScript")),
+        help: () => HELP.map(([t, l]) => H(t, l.map(Pp).join(""))).join(""),
+        shortcuts: () =>
+          H(
+            "KEYBOARD SHORTCUTS",
+            KEYS.map(
+              ([k, a]) =>
+                `<p class="ahmad-shortcut"><span class="ahmad-shortcut-key">${k}</span><span>${a}</span></p>`,
+            ).join(""),
+          ),
+      };
+      // ---- window manager ----
+      function place(w) {
+        const e = w.el,
+          dw = desk.clientWidth,
+          dh = desk.clientHeight;
+        if (narrow()) {
+          const ic = $("#icons").getBoundingClientRect(),
+            dk = desk.getBoundingClientRect();
+          w.x = 8;
+          w.y = Math.max(8, ic.bottom - dk.top + 8);
+          e.style.width = dw - 16 + "px";
+          e.style.height =
+            Math.max(180, Math.min(SZ[w.id][1], dh - w.y - 8)) + "px";
+          return;
+        }
+        const [sw, sh] = SZ[w.id];
+        e.style.width = Math.min(sw, dw - 16) + "px";
+        e.style.height = Math.min(sh, dh - 16) + "px";
+        if (w.x == null) [w.x, w.y] = P0[w.id];
+        w.x = Math.min(Math.max(0, w.x), Math.max(0, dw - 320));
+        w.y = Math.min(Math.max(0, w.y), Math.max(0, dh - 180));
+      }
+      function build(w) {
+        const e = document.createElement("section");
+        e.className =
+          "ahmad-window ahmad-application-window" + (w.dlg ? " is-dialog" : "");
+        e.setAttribute("role", w.dlg ? "dialog" : "group");
+        e.setAttribute("aria-label", w.title + " window");
+        e.innerHTML = `<header class="ahmad-titlebar inactive"><span class="ahmad-window-title">${w.title}</span><span class="ahmad-window-controls"><button class="ahmad-window-control" data-a="min" aria-label="Minimize ${w.title}"><span class="ahmad-glyph-minimize"></span></button>${w.dlg ? "" : '<button class="ahmad-window-control" data-a="max"><span class="ahmad-glyph-maximize"></span></button>'}<button class="ahmad-window-control" data-a="x" aria-label="Close ${w.title}"><span class="ahmad-glyph-close"></span></button></span></header>`;
+        const b = document.createElement("div");
+        b.className =
+          w.id === "terminal" ? "ahmad-terminal" : "ahmad-detail-content";
+        e.appendChild(b);
+        w.el = e;
+        if (w.id === "terminal") term(b, w);
+        else b.innerHTML = C[w.id]();
+        if (w.dlg) {
+          const a = document.createElement("div");
+          a.className = "ahmad-dialog-actions";
+          a.innerHTML =
+            '<button type="button" class="ahmad-dialog-button">OK</button>';
+          a.firstChild.onclick = () => closeW(w.id);
+          e.appendChild(a);
+        }
+        e.addEventListener("pointerdown", () => {
+          if (active !== w.id) focusW(w.id);
+        });
+        e.querySelectorAll(".ahmad-titlebar button").forEach((x) => {
+          x.onpointerdown = (ev) => ev.stopPropagation();
+          x.onclick = () => {
+            const a = x.dataset.a;
+            a === "x"
+              ? closeW(w.id)
+              : a === "min"
+                ? minW(w.id)
+                : toggleMax(w.id);
+          };
+        });
+        const tb = e.querySelector(".ahmad-titlebar");
+        tb.onpointerdown = (ev) => {
+          if (ev.target.closest("button") || w.max || narrow() || ev.button)
+            return;
+          const ox = ev.clientX - w.x,
+            oy = ev.clientY - w.y;
+          tb.setPointerCapture(ev.pointerId);
+          e.classList.add("is-dragging");
+          const mv = (m) => {
+            w.x = Math.min(
+              Math.max(0, m.clientX - ox),
+              Math.max(0, desk.clientWidth - 320),
+            );
+            w.y = Math.min(
+              Math.max(0, m.clientY - oy),
+              Math.max(0, desk.clientHeight - 180),
+            );
+            e.style.left = w.x + "px";
+            e.style.top = w.y + "px";
+            e.style.setProperty("--ahmad-window-offset-x", w.x + "px");
+            e.style.setProperty("--ahmad-window-offset-y", w.y + "px");
+          };
+          const up = () => {
+            e.classList.remove("is-dragging");
+            ["pointermove", "pointerup", "pointercancel"].forEach((t) =>
+              tb.removeEventListener(t, t === "pointermove" ? mv : up),
+            );
+          };
+          tb.addEventListener("pointermove", mv);
+          tb.addEventListener("pointerup", up);
+          tb.addEventListener("pointercancel", up);
+        };
+        desk.appendChild(e);
+        place(w);
+      }
+      function sync() {
+        ALL.forEach((w) => {
+          const e = w.el;
+          if (!e) return;
+          const v = vis(w);
+          e.style.display = v ? "" : "none";
+          const foc = v && active === w.id;
+          e.classList.toggle("is-maximized", !!w.max);
+          e.classList.toggle("is-focused", foc);
+          e.querySelector(".ahmad-titlebar").classList.toggle("inactive", !foc);
+          e.style.zIndex = w.z;
+          if (!w.max) {
+            e.style.left = w.x + "px";
+            e.style.top = w.y + "px";
+            e.style.setProperty("--ahmad-window-offset-x", w.x + "px");
+            e.style.setProperty("--ahmad-window-offset-y", w.y + "px");
+          }
+          const m = e.querySelector("[data-a=max]");
+          if (m) {
+            m.firstChild.className = w.max
+              ? "ahmad-glyph-restore"
+              : "ahmad-glyph-maximize";
+            m.setAttribute(
+              "aria-label",
+              (w.max ? "Restore " : "Maximize ") + w.title,
+            );
+          }
+        });
+        tasks.innerHTML = "";
+        ALL.forEach((w) => {
+          if (!w.open) return;
+          const b = document.createElement("button");
+          b.textContent = `[${w.title}]`;
+          b.title = w.title;
+          b.dataset.id = w.id;
+          b.className = "ahmad-status-item";
+          b.dataset.active = active === w.id && !w.min;
+          b.dataset.minimized = !!w.min;
+          b.onclick = () => open(w.id);
+          tasks.appendChild(b);
+        });
+        document.querySelectorAll(".ahmad-desktop-icon").forEach((i) => {
+          i.querySelector(".ahmad-desktop-icon-flag").hidden =
+            !W[i.dataset.id].open;
+        });
+      }
+      function focusW(id) {
+        W[id].z = ++topZ;
+        active = id;
+        sync();
+      }
+      function open(id) {
+        const w = W[id];
+        if (!w.open) {
+          w.open = 1;
+          build(w);
+        }
+        w.min = 0;
+        focusW(id);
+        const t =
+          w.id === "terminal"
+            ? w.el.querySelector("input")
+            : w.dlg
+              ? w.el.querySelector(".ahmad-dialog-actions button")
+              : null;
+        t && t.focus();
+      }
+      function exitW(w, kind, done) {
+        const e = w.el;
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          done();
+          return;
+        }
+        e.dataset.exiting = kind;
+        setTimeout(done, kind === "close" ? 110 : 140);
+      }
+      function closeW(id) {
+        const w = W[id];
+        if (!w.open || w.el.dataset.exiting) return;
+        exitW(w, "close", () => {
+          w.open = 0;
+          w.min = 0;
+          w.el.remove();
+          w.el = null;
+          active = topVis();
+          sync();
+          const i = desk.querySelector(`.ahmad-desktop-icon[data-id="${id}"]`);
+          i && i.focus();
+        });
+      }
+      function minW(id) {
+        const w = W[id];
+        if (!vis(w) || w.el.dataset.exiting) return;
+        exitW(w, "minimize", () => {
+          delete w.el.dataset.exiting;
+          w.min = 1;
+          active = topVis();
+          sync();
+          const b =
+            tasks.querySelector(`[data-id="${id}"]`) ||
+            desk.querySelector(".ahmad-desktop-icon");
+          b && b.focus();
+        });
+      }
+      function toggleMax(id) {
+        const w = W[id];
+        if (!vis(w)) return;
+        w.max = w.max ? 0 : 1;
+        focusW(id);
+      }
+      function showDesktop() {
+        ALL.forEach((w) => {
+          if (w.open) w.min = 1;
+        });
+        active = null;
+        sync();
+      }
+      addEventListener("resize", () => {
+        ALL.forEach((w) => w.el && place(w));
+        sync();
+      });
+      // ---- icons ----
+      function icons() {
+        const c = $("#icons");
+        c.innerHTML = "";
+        c.className = "ahmad-desktop-icons" + (arr ? " is-arranged" : "");
+        const l = arr
+          ? [...APPS].sort((a, b) => a[1].localeCompare(b[1]))
+          : APPS;
+        l.forEach(([id, t]) => {
+          const s = arr ? t.toUpperCase() : t,
+            k = s.lastIndexOf("."),
+            b = document.createElement("button");
+          b.className = "ahmad-desktop-icon";
+          b.type = "button";
+          b.dataset.id = id;
+          b.title = t;
+          b.setAttribute("aria-label", "Open " + t);
+          b.innerHTML = `<span class="ahmad-desktop-icon-art">${px(id)}</span><span class="ahmad-desktop-icon-label"><span class="ahmad-desktop-icon-name">${s.slice(0, k)}</span><span class="ahmad-desktop-icon-extension">${s.slice(k)}</span></span><span class="ahmad-desktop-icon-flag" hidden></span>`;
+          b.onclick = () => open(id);
+          c.appendChild(b);
+        });
+        sync();
+      }
+      // ---- menus ----
+      const I = (l, f, o) => ({ l, f, ...o }),
+        SEP = 0;
+      const MENUS = () => [
+        [
+          "SYSTEM",
+          [
+            I("About AhmadOS", () => open("about")),
+            I("System Info", () => open("system-info")),
+            SEP,
+            I("Close Menu"),
+          ],
+        ],
+        [
+          "File",
+          [
+            I("Open Ahmad.exe", () => open("ahmad")),
+            I("Open CV", 0, { h: D.links.CV }),
+            SEP,
+            I("Close Active Window", () => active && closeW(active), {
+              d: !active,
+            }),
+          ],
+        ],
+        [
+          "View",
+          [
+            I("Show Desktop", showDesktop),
+            SEP,
+            I(
+              "Arrange Icons",
+              () => {
+                arr = !arr;
+                icons();
+              },
+              { c: arr },
+            ),
+          ],
+        ],
+        [
+          "Run",
+          [
+            ["Ahmad.exe", "ahmad"],
+            ["Terminal.exe", "terminal"],
+            ["Projects", "projects"],
+            ["Skills", "skills"],
+            ["Contact", "contact"],
+          ].map(([l, id]) => I(l, () => open(id))),
+        ],
+        [
+          "Help",
+          [
+            I("AhmadOS Help", () => open("help")),
+            I("Keyboard Shortcuts", () => open("shortcuts")),
+            SEP,
+            I("About", () => open("about")),
+          ],
+        ],
+      ];
+      function showMenu(items, x, y, ret, idx) {
+        closeMenu();
+        const m = document.createElement("div");
+        m.className = "ahmad-menu";
+        m.setAttribute("role", "menu");
+        items.forEach((it) => {
+          if (!it) {
+            m.insertAdjacentHTML(
+              "beforeend",
+              '<div class="ahmad-menu-separator"></div>',
+            );
+            return;
+          }
+          const e = document.createElement(it.h ? "a" : "button");
+          if (it.h) {
+            e.href = it.h;
+            e.target = "_blank";
+            e.rel = "noopener noreferrer";
+          } else e.type = "button";
+          e.disabled = !!it.d;
+          e.setAttribute(
+            "role",
+            it.c === undefined ? "menuitem" : "menuitemcheckbox",
+          );
+          e.className = "ahmad-menu-item";
+          e.innerHTML = `<span class="ahmad-menu-item-mark">${it.c ? "✓" : ""}</span><span class="ahmad-menu-item-label">${it.l}</span>`;
+          e.onclick = (ev) => {
+            closeMenu(true);
+            it.f && it.f(ev);
+          };
+          m.appendChild(e);
+        });
+        document.body.appendChild(m);
+        const r = m.getBoundingClientRect();
+        m.style.left =
+          Math.max(4, Math.min(x, innerWidth - r.width - 4)) + "px";
+        m.style.top =
+          Math.max(4, Math.min(y, innerHeight - r.height - 4)) + "px";
+        menu = { el: m, ret, idx };
+        barSync();
+        const f = m.querySelector("button:not(:disabled),a");
+        f && f.focus();
+      }
+      function closeMenu(restore) {
+        if (!menu) return;
+        const r = menu.ret;
+        menu.el.remove();
+        menu = null;
+        barSync();
+        if (restore && r && r.isConnected) r.focus();
+      }
+      function barSync() {
+        document.querySelectorAll("#bar button").forEach((b, i) => {
+          b.dataset.active = !!menu && menu.idx === i;
+          b.setAttribute("aria-expanded", !!menu && menu.idx === i);
+        });
+      }
+      function barOpen(i) {
+        const b = $("#bar").children[i],
+          r = b.getBoundingClientRect();
+        showMenu(MENUS()[i][1], r.left, r.bottom, b, i);
+      }
+      MENUS().forEach(([t], i) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "ahmad-command-item";
+        b.textContent = t;
+        b.setAttribute("aria-haspopup", "menu");
+        b.onclick = () =>
+          menu && menu.idx === i ? closeMenu(true) : barOpen(i);
+        $("#bar").appendChild(b);
+      });
+      desk.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        showMenu(
+          [
+            I("Open Ahmad.exe", () => open("ahmad")),
+            I(
+              "Arrange Icons",
+              () => {
+                arr = !arr;
+                icons();
+              },
+              { c: arr },
+            ),
+            SEP,
+            I("System Info", () => open("system-info")),
+            SEP,
+            I("Close Menu"),
+          ],
+          e.clientX,
+          e.clientY,
+          document.activeElement !== document.body
+            ? document.activeElement
+            : desk.querySelector(".ahmad-desktop-icon"),
+          -1,
+        );
+      });
+      document.addEventListener("pointerdown", (e) => {
+        if (
+          menu &&
+          !menu.el.contains(e.target) &&
+          !(menu.ret && menu.ret.contains(e.target))
+        )
+          closeMenu();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (menu) {
+          const its = [...menu.el.querySelectorAll("button:not(:disabled),a")],
+            i = its.indexOf(document.activeElement);
+          if (e.key === "Escape") {
+            e.preventDefault();
+            closeMenu(true);
+          } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+            e.preventDefault();
+            if (its.length)
+              its[
+                (i + (e.key === "ArrowDown" ? 1 : -1) + its.length) % its.length
+              ].focus();
+          } else if (
+            (e.key === "ArrowLeft" || e.key === "ArrowRight") &&
+            menu.idx >= 0
+          ) {
+            e.preventDefault();
+            barOpen((menu.idx + (e.key === "ArrowRight" ? 1 : 4)) % 5);
+          } else if (e.key === "Tab") closeMenu();
+          return;
+        }
+        if (
+          e.key === "Escape" &&
+          active &&
+          W[active].dlg &&
+          [document.body, null].includes(document.activeElement)
+        )
+          closeW(active);
+      });
+      // ---- terminal ----
+      const DESC = {
+        help: "Show available commands",
+        whoami: "Display developer identity",
+        about: "Display information about AhmadOS",
+        projects: "List projects",
+        skills: "List technical skills",
+        contact: "Display contact information",
+        github: "Display GitHub profile and repositories",
+        dir: "List the volume contents",
+        clear: "Clear terminal",
+        date: "Display current date",
+        version: "Display AhmadOS version",
+        exit: "Close terminal",
+      };
+      const hd = (t) => ({ k: "heading", t }),
+        nn = (i) => String(i + 1).padStart(2, "0"),
+        IND = "    ";
+      const CM = {
+        help: () => [
+          "Available commands:",
+          "",
+          ...Object.entries(DESC).map(([n, d]) => n.padEnd(12) + d),
+          "",
+          "Commands are not case sensitive.",
+        ],
+        whoami: () => [D.name, D.title],
+        about: () => [
+          OS,
+          TAG,
+          "",
+          `Browser-based operating system portfolio presenting the work, skills,`,
+          `education, skills and projects of ${D.name}.`,
+        ],
+        projects: () => [
+          hd("PROJECTS"),
+          "",
+          ...D.projects.flatMap((p, i) => [
+            `${nn(i)}  ${p.name}`,
+            ...(dt(p) ? [IND + dt(p)] : []),
+            ...(p.gh ? [IND + p.gh] : []),
+            "",
+          ]),
+        ],
+        skills: () =>
+          D.skills.flatMap((s) => [hd(s.cat.toUpperCase()), ...s.items, ""]),
+        contact: () => [
+          hd("CONTACT"),
+          "",
+          D.name,
+          "Email: " + D.email,
+          "Phone: " + D.phone,
+          "Location: " + D.loc,
+          "",
+          ...PL.map((l) => l[0] + ": " + l[1]),
+          "CV: " + D.links.CV,
+        ],
+        github: () => [
+          hd("GITHUB"),
+          "",
+          "Profile: " + D.links.GH,
+          "",
+          "Repositories:",
+          "",
+          ...D.projects
+            .filter((p) => p.gh)
+            .flatMap((p) => [IND + p.name, IND + IND + p.gh, ""]),
+        ],
+        dir: () => [
+          ` Volume in drive C is ${OS.toUpperCase()}`,
+          " Directory of C:\\AHMAD",
+          "",
+          ...APPS.map(([, t], i) => {
+            const k = t.lastIndexOf(".");
+            return `${nn(i)}  07-27-26  09:14  ${String(1024 * (32 - i * 3)).padStart(9)}  ${t.slice(0, k).toUpperCase().padEnd(10)} ${t.slice(k + 1).toUpperCase()}`;
+          }),
+          "",
+          `      ${APPS.length} file(s)     4096 bytes free`,
+          "",
+        ],
+        date: () => [
+          new Intl.DateTimeFormat(undefined, {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }).format(new Date()),
+        ],
+        version: () => [`${OS} v${VER}`],
+      };
+      function term(b, w) {
+        b.innerHTML = `<div role="log" aria-live="polite" aria-label="Terminal output"></div><div class="ahmad-terminal-prompt"><label class="ahmad-terminal-prompt-label" for="tin">${PROMPT}</label><input class="ahmad-terminal-input" id="tin" type="text" aria-label="Terminal command" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>`;
+        const log = b.firstChild,
+          inp = b.querySelector("input"),
+          hist = [];
+        let hi = null;
+        const add = (t, k) => {
+          const d = document.createElement("div");
+          d.className = "ahmad-terminal-line";
+          d.dataset.kind = k || "output";
+          d.textContent = t;
+          log.appendChild(d);
+        };
+        [`${OS} Terminal`, 'Type "help" for available commands.', ""].forEach(
+          (t) => add(t, "banner"),
+        );
+        b.onpointerdown = () => inp.focus();
+        inp.onkeydown = (e) => {
+          if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+            e.preventDefault();
+            if (!hist.length) return;
+            const n = Math.min(
+              hist.length,
+              Math.max(
+                0,
+                (hi === null ? hist.length : hi) +
+                  (e.key === "ArrowUp" ? -1 : 1),
+              ),
+            );
+            hi = n;
+            inp.value = hist[n] || "";
+            return;
+          }
+          if (e.key !== "Enter") return;
+          e.preventDefault();
+          const raw = inp.value;
+          inp.value = "";
+          add(`${PROMPT} ${raw}`, "echo");
+          const t = raw.trim().replace(/\s+/g, " ");
+          if (!t) {
+            return;
+          }
+          const c = t.split(" ")[0].toLowerCase();
+          if (hist[hist.length - 1] !== t) hist.push(t);
+          hi = null;
+          if (c === "clear" || c === "cls") log.textContent = "";
+          else if (c === "exit") closeW(w.id);
+          else {
+            const f = CM[c];
+            const out = f
+              ? f()
+              : [
+                  { k: "error", t: `Bad command or file name: ${c}` },
+                  'Type "help" for available commands.',
+                ];
+            add("");
+            out.forEach((l) =>
+              typeof l === "string" ? add(l) : add(l.t, l.k),
+            );
+          }
+          b.scrollTop = b.scrollHeight;
+        };
+      }
+      // ---- tray, clock, boot ----
+      const T = $("#tray");
+      const lk = document.createElement("span");
+      lk.className = "ahmad-status-links";
+      [
+        ["in", D.links.in, "LINKEDIN"],
+        ["GH", D.links.GH, "GITHUB"],
+      ].forEach(([b, u, t]) => {
+        const a = document.createElement("a");
+        a.className = "ahmad-status-link";
+        a.href = u;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        a.title = t;
+        a.textContent = `[${b}]`;
+        lk.appendChild(a);
+      });
+      const cv = document.createElement("a");
+      cv.className = "ahmad-status-cv";
+      cv.href = D.links.CV;
+      cv.target = "_blank";
+      cv.rel = "noopener noreferrer";
+      cv.title = "Open CV";
+      cv.textContent = "[CV]";
+      const clk = document.createElement("time");
+      clk.className = "ahmad-status-clock";
+      T.append(lk, cv, clk);
+      const tick = () =>
+        (clk.textContent = new Intl.DateTimeFormat(undefined, {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        }).format(new Date()));
+      tick();
+      setInterval(tick, 1000);
+      function boot() {
+        const L = [
+            `${OS} ${VER}`,
+            TAG,
+            "",
+            "Memory Test: 640K OK",
+            "Detecting System Components . . . OK",
+            "",
+            "Loading Ahmad.exe . . . OK",
+          ],
+          b = document.createElement("div"),
+          rm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        b.className = "ahmad-boot";
+        document.body.appendChild(b);
+        let n = rm ? L.length : 1,
+          done = 0;
+        const ts = [];
+        const paint = () =>
+          (b.innerHTML =
+            '<div class="ahmad-boot-screen">' +
+            L.slice(0, n)
+              .map((l) => `<p class="ahmad-boot-line">${l || "&nbsp;"}</p>`)
+              .join("") +
+            `<p class="ahmad-boot-prompt">${PROMPT}<span class="ahmad-boot-cursor"></span></p></div><p class="ahmad-boot-skip">Press any key to skip</p>`);
+        paint();
+        const kd = (e) => {
+          if (e.key !== "Tab") {
+            e.preventDefault();
+            fin();
+          }
+        };
+        function fin() {
+          if (done) return;
+          done = 1;
+          ts.forEach(clearTimeout);
+          removeEventListener("keydown", kd, true);
+          b.classList.add("is-leaving");
+          setTimeout(() => b.remove(), 120);
+        }
+        addEventListener("keydown", kd, true);
+        b.onpointerdown = (e) => {
+          e.preventDefault();
+          fin();
+        };
+        if (rm) ts.push(setTimeout(fin, 260));
+        else {
+          for (let i = 1; i < L.length; i++)
+            ts.push(
+              setTimeout(() => {
+                n = i + 1;
+                paint();
+              }, i * 165),
+            );
+          ts.push(setTimeout(fin, (L.length - 1) * 165 + 420));
+        }
+      }
+      icons();
+      boot();
+    </script>
+  </body>
+</html>
