@@ -974,7 +974,6 @@
     </div>
     <div class="ahmad-crt" aria-hidden="true"></div>
     <script>
-      // ===== EDIT YOUR CONTENT HERE =====
       const D = {
         name: "Ahmad Metwally",
         title: "Software Engineer",
@@ -987,7 +986,7 @@
         links: {
           in: "https://www.linkedin.com/in/ahmad-metwally-8007b9407",
           GH: "https://github.com/AhmadMetwally711",
-          CV: "#",
+          CV: "Ahmad-Metwally-CV.pdf",
         },
         edu: [
           {
@@ -1163,7 +1162,6 @@
           { cat: "French", items: ["Basic"] },
         ],
       };
-      // ==================================
       const OS = "AhmadOS",
         VER = "1.0",
         PROMPT = "C:\\AHMAD>",
@@ -1277,7 +1275,6 @@
           });
           return b && b.id;
         };
-      // ---- content ----
       const H = (t, c) =>
           `<section class="ahmad-detail-section"><h2>${t}</h2>${c}</section>`,
         Pp = (t) => `<p>${t}</p>`,
@@ -1447,7 +1444,6 @@
             ).join(""),
           ),
       };
-      // ---- window manager ----
       function place(w) {
         const e = w.el,
           dw = desk.clientWidth,
@@ -1661,7 +1657,6 @@
         ALL.forEach((w) => w.el && place(w));
         sync();
       });
-      // ---- icons ----
       function icons() {
         const c = $("#icons");
         c.innerHTML = "";
@@ -1684,7 +1679,6 @@
         });
         sync();
       }
-      // ---- menus ----
       const I = (l, f, o) => ({ l, f, ...o }),
         SEP = 0;
       const MENUS = () => [
@@ -1879,7 +1873,6 @@
         )
           closeW(active);
       });
-      // ---- terminal ----
       const DESC = {
         help: "Show available commands",
         whoami: "Display developer identity",
@@ -2032,7 +2025,6 @@
           b.scrollTop = b.scrollHeight;
         };
       }
-      // ---- tray, clock, boot ----
       const T = $("#tray");
       const lk = document.createElement("span");
       lk.className = "ahmad-status-links";
